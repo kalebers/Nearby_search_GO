@@ -1,9 +1,10 @@
 package main
 
-// precisa-se usar a latitude e longitude do lugar para pegar recomendacoes nearby: -25.435463328482644, -49.2767323365602
+// precisa-se usar a latitude e longitude do lugar para pegar recomendacoes nearby: -25.45385944315111, -49.23022563021175
 
 // to do: how to implement the lat and long?
-// what parameters to pass to the api link?
+// answer: you pass the lat and long in the URL of the API
+
 import (
 	"fmt"
 	"io/ioutil"
@@ -12,7 +13,7 @@ import (
 
 func main() {
 
-	url := "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-25.435463328482644, -49.2767323365602&radius=1500&type=restaurant&keyword=cruise&key=YOUR_API_KEY"
+	url := "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-25.45385944315111,-49.23022563021175&radius=1500&type=restaurant&keyword=cruise&key=AIzaSyDZxEKhXaedBzs4XPxE5UleZ3-rNrmaMHs"
 	method := "GET"
 
 	client := &http.Client{}
