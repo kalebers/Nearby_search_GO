@@ -13,7 +13,7 @@ import (
 
 func main() {
 
-	url := "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-25.45385944315111,-49.23022563021175&radius=1500&type=restaurant&keyword=cruise&key=AIzaSyDZxEKhXaedBzs4XPxE5UleZ3-rNrmaMHs"
+	url := "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-25.45385944315111,-49.23022563021175&radius=1500&type=restaurant&keyword=cruise&key=KEY HERE"
 	method := "GET"
 
 	client := &http.Client{}
