@@ -1,9 +1,8 @@
 package main
 
-// precisa-se usar a latitude e longitude do lugar para pegar recomendacoes nearby: -25.45385944315111, -49.23022563021175
+// precisa-se usar a latitude e longitude do lugar para pegar recomendacoes nearby: -25.440660614399487, -49.27741271669351
 
-// to do: how to implement the lat and long?
-// answer: you pass the lat and long in the URL of the API
+// to do: how to save the json request in a file?
 
 import (
 	"fmt"
@@ -12,8 +11,7 @@ import (
 )
 
 func main() {
-
-	url := "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-25.45385944315111,-49.23022563021175&radius=1500&type=restaurant&keyword=cruise&key=KEY HERE"
+	url := "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-25.440660614399487,-49.277412716693516&radius=10000&type=restaurant&keyword=rankby&key="
 	method := "GET"
 
 	client := &http.Client{}
@@ -36,22 +34,6 @@ func main() {
 		return
 	}
 	fmt.Println(string(body))
+
+	//os.WriteFile("go/go_exercises"+".txt", []byte(url), 0644)
 }
-
-/*
-func main() {
-	response, err := http.Get("https://maps.googleapis.com/maps/api/place/nearbysearch/outputFormat?parameters")
-
-	if err != nil {
-		fmt.Print(err.Error())
-		os.Exit(1)
-	}
-
-	responseData, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println(string(responseData))
-
-}
-*/
