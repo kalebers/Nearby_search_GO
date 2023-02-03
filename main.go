@@ -1,24 +1,19 @@
 package main
 
-// precisa-se usar a latitude e longitude do lugar para pegar recomendacoes nearby:
-// to use the maps api I have to enable the feature in gcp with the key
-
-// to do: how to save the json request in a file? done
-
 import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"sort"
 )
 
-const (
-	apiKey     = ""
-	location   = ""     // latitude,longitude of location
-	radius     = "5000" // radius in meters
-	keyword    = "restaurant"
-	maxResults = 10
-)
+type Config struct {
+	ApiKey   string `json:"apiKey"`
+	Location string `json:"location"`
+	Radius   string `json:"radius"`
+	Keyword  string `json:"keyword"`
+}
 
 type Response struct {
 	Results []struct {
@@ -28,8 +23,27 @@ type Response struct {
 }
 
 func main() {
+	// Read the configuration file
+	configBytes, err := ioutil.ReadFile("config.json")
+	if err != nil {
+		panic(err)
+	}
+
+	// Unmarshal the JSON into a Go data structure
+	var config Config
+	err = json.Unmarshal(configBytes, &config)
+	if err != nil {
+		panic(err)
+	}
+
+	// Use the values from the configuration file
+	apiKey := config.ApiKey
+	location := config.Location
+	radius := config.Radius
+	keyword := config.Keyword
+
 	// Build the URL for the API request
-	url := fmt.Sprintf("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s&radius=%s&keyword=%s&maxresults=%d&key=%s", location, radius, keyword, maxResults, apiKey)
+	url := fmt.Sprintf("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%s&radius=%s&keyword=%s&key=%s", location, radius, keyword, apiKey)
 
 	// Make the API request
 	resp, err := http.Get(url)
@@ -52,8 +66,14 @@ func main() {
 		panic(err)
 	}
 
+	// Sort the results by rating (highest to lowest)
+	sort.Slice(data.Results, func(i, j int) bool {
+		return data.Results[i].Rating > data.Results[j].Rating
+	})
+
 	// Print the names and ratings of the top 10 restaurants
-	for i, result := range data.Results {
+	for i := 0; i < 10; i++ {
+		result := data.Results[i]
 		fmt.Printf("%d. %s - Rating: %.1f\n", i+1, result.Name, result.Rating)
 	}
 
